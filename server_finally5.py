@@ -65,47 +65,17 @@ GPIO.setup(GPIOOUT, GPIO.OUT)
 try:
         while True:
                 state = GPIO.input(GPIOIN)
-		if state == True :
-                        print("Motion detected")
-                else :
-                        print("No motion")
-                        record()
+		
+		if (state == True): #움직임이 감지되면 녹화
+        		startTime = time.time()
+        		while True:
+            			nowTime = time.time()
+            			if (nowTime - startTime >= 10):
+                			record()
+                			break
 
                 GPIO.output(GPIOOUT, state)
                 time.sleep(0.5)
 
 except KeyboardInterrupt:
         GPIO.cleanup()
-"""
-email_user = 'son33620812@gmail.com'
-email_password = 'hlove3308'
-email_send = 'son33620812@gmail.com'
-subject = 'project finish??'
-
-msg = MIMEMultipart()
-msg['From'] = email_user
-msg['To'] = email_send
-msg['Subject'] = subject
-
-
-body = 'project finish~~'
-msg.attach(MIMEText(body,'plain'))
-
-filename='hello.mp4'
-attachment  =open(filename,'rb')
-
-part = MIMEBase('application','octet-stream')
-part.set_payload((attachment).read())
-encoders.encode_base64(part)
-part.add_header('Content-Disposition',"attachment; filename= "+filename)
-msg.attach(part)
-
-
-text = msg.as_string()
-server = smtplib.SMTP('smtp.gmail.com',587)
-server.starttls()
-server.login(email_user,email_password)
-
-server.sendmail(email_user,email_send,text)
-server.quit()
-"""
